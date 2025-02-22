@@ -1,4 +1,4 @@
-from .lib import Message, Agent, Tool, HuggingFace
+from .lib import Agent, Tool, HuggingFace
 from .config import Tools
 
 
@@ -86,7 +86,7 @@ def main() -> None:
 
             continue
 
-        print(agent.submit_message(message=Message(content=user_input)))
+        print(agent.submit_message(message=user_input))
 
     print("\nbye")
 

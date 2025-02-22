@@ -1,4 +1,3 @@
-
 import re
 
 from .chat import Chat, Message
@@ -35,8 +34,8 @@ class Agent:
         self._chat = new_chat
         self._current_tools = updated_tools
 
-    def submit_message(self, message: Message) -> str:
-        self._chat.submit_message(message=message)
+    def submit_message(self, message: str) -> str:
+        self._chat.submit_message(message=Message(content=message))
         prompt = self._chat._conversation
 
         output = self._llm.think(prompt=prompt)
