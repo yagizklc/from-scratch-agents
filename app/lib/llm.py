@@ -17,15 +17,9 @@ class HuggingFace:
         self.client = InferenceClient(endpoint_url)
 
     def observe(self, prompt: str) -> str:
-        return self.client.text_generation(
-            prompt, max_new_tokens=200, do_sample=True, temperature=0.7
-        )
+        return self.client.text_generation(prompt=prompt, max_new_tokens=200)
 
     def think(self, prompt: str, stop: str = "Observation:") -> str:
         return self.client.text_generation(
-            prompt,
-            max_new_tokens=200,
-            stop=[stop],
-            do_sample=True,
-            temperature=0.7,
+            prompt=prompt, max_new_tokens=200, stop=[stop]
         )
