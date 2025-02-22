@@ -1,7 +1,9 @@
 from typing import Literal, Optional, Self
+
 from pydantic import BaseModel, model_validator
-from .tool import Tool
+
 from .config import SYSTEM_MESSAGE
+from .tool import Tool
 
 Role = Literal["user", "assitant"]
 
@@ -43,10 +45,11 @@ class Chat(BaseModel):
 
     @model_validator(mode="after")
     def constuct_system_message(self) -> Self:
+        # default system message
         if not self._system_message:
             tool_schemas = "\n        ".join(
                 [tool.tool_schema() for tool in self.tools]
             )
-            SYSTEM_MESSAGE.format(tool_schemas=tool_schemas)
+            self._system_message = SYSTEM_MESSAGE.format(tool_schemas=tool_schemas)
 
         return self

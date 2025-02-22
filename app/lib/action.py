@@ -3,5 +3,5 @@ from pydantic import BaseModel
 
 
 class Action(BaseModel):
-    action: str
-    action_input: dict[str, Any]
+    tool_name: str
+    params: dict[str, Any]

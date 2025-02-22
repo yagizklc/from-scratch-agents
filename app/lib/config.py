@@ -4,16 +4,7 @@ Answer the following questions as best you can. You have access to the following
 {tool_schemas}
 
 The way you use the tools is by specifying a json blob.
-Specifically, this json should have an `action` key (with the name of the tool to use) and an `action_input` key (with the input to the tool going here).
-
-The only values that should be in the "action" field are:
-get_weather: Get the current weather in a given location, args: {{"location": {{"type": "string"}}}}
-example use : 
-
-{{
-  "action": "get_weather",
-  "action_input": {{"location": "New York"}}
-}}
+Specifically, this json should have a `tool_name` key (with the name of the tool to use) and a `params` key (with the input parameters as a list of tuples).
 
 ALWAYS use the following format:
 

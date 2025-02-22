@@ -1,6 +1,4 @@
-from typing import Any, Mapping
 
-import json
 import re
 
 from .chat import Chat, Message
@@ -45,10 +43,10 @@ class Agent:
         action = self._parse_output_to_action(output=output)
 
         tools = {t.__name__.lower(): t for t in self._current_tools}
-        if action.action.lower() not in tools:
+        if action.tool_name.lower() not in tools:
             raise Exception("not a valid tool")
 
-        observation = tools[action.action].use(**action.action_input)
+        observation = tools[action.tool_name].use(**action.params)
         new_prompt = prompt + output + observation
         return self._llm.observe(new_prompt)
 
