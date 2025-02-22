@@ -27,13 +27,13 @@ class Chat(BaseModel):
         <|im_end|>
         """
         for message in reversed(self._messages):
-            chat_history = self.__append_message_to_chat_history(
+            chat_history = self.__construct_history(
                 chat_history=chat_history, message=message
             )
 
         return chat_history
 
-    def __append_message_to_chat_history(self, chat_history: str, message: Message):
+    def __construct_history(self, chat_history: str, message: Message):
         return f"""
         {chat_history}
 

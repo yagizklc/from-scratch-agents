@@ -1,7 +1,12 @@
 from typing import Any, Mapping
+
+import json
+import re
+
 from .chat import Chat, Message
-from .tool import Tool
 from .llm import LLM
+from .tool import Tool
+from .action import Action
 
 
 class Agent:
@@ -15,6 +20,10 @@ class Agent:
         self._chat = Chat(tools=tools)
         self._current_tools = tools or []
         self._llm = llm
+
+    @property
+    def current_tools(self) -> list[type[Tool]]:
+        return self._current_tools
 
     def add_tools(self, new_tools: list[type[Tool]]) -> None:
         updated_tools = list(set(self._current_tools + new_tools))
@@ -33,21 +42,24 @@ class Agent:
         prompt = self._chat._conversation
 
         output = self._llm.think(prompt=prompt)
-        tool_name, params = self._parse_output_to_action(output=output)
+        action = self._parse_output_to_action(output=output)
 
         tools = {t.__name__.lower(): t for t in self._current_tools}
-        if tool_name.lower() not in tools:
+        if action.action.lower() not in tools:
             raise Exception("not a valid tool")
 
-        tool = tools[tool_name]
-        observation = tool.use(**params)
-
+        observation = tools[action.action].use(**action.action_input)
         new_prompt = prompt + output + observation
         return self._llm.observe(new_prompt)
 
-    @property
-    def current_tools(self) -> list[type[Tool]]:
-        return self._current_tools
+    def _parse_output_to_action(self, output: str) -> Action:
+        # Find JSON block between triple backticks
+        json_match = re.search(r"```(?:json\n)?({[^}]+})```", output)
+        if not json_match:
+            raise ValueError("No valid JSON action block found in output")
 
-    def _parse_output_to_action(self, output: str) -> tuple[str, Mapping[str, Any]]:
-        return ("", {})
+        action_block = json_match.group(1)
+        try:
+            return Action.model_validate_json(action_block)
+        except Exception as e:
+            raise ValueError(f"Failed to parse action JSON: {e}")
