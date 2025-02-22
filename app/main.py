@@ -1,15 +1,20 @@
-from .lib import Message, Agent
+from .lib import Message, Agent, Tool, HuggingFace
 from .config import Tools
 
 
+# This is command-line-interface (CLI) app
+# however the lib can be used in any user interface
+
+
 def main() -> None:
-    # Create DynamicChat instance with no initial tools
-    agent = Agent()
+    # TODO: add a select your llm thing
+
+    agent = Agent(llm=HuggingFace())
 
     # Main chat loop
     print("Chat started! (Type 'quit' to exit, 'tools' to modify tools)")
     while True:
-        user_input = input(">")
+        user_input = input("> ")
 
         if user_input.lower() in ("q", "quit", "exit"):
             break
@@ -25,7 +30,9 @@ def main() -> None:
 
             if choice == "1":
                 # Show available tools that aren't currently selected
-                available = [t for t in Tools if t not in agent.current_tools]
+                available: list[type[Tool]] = [
+                    t for t in Tools if t not in agent.current_tools
+                ]
                 if not available:
                     print("No additional tools available!")
                     continue
@@ -79,7 +86,7 @@ def main() -> None:
 
             continue
 
-        agent.submit_message(message=Message(content=user_input))
+        print(agent.submit_message(message=Message(content=user_input)))
 
     print("\nbye")
 

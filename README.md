@@ -22,4 +22,5 @@ python -m app.main
 ## Future Work
 
 - Add a context window for handling long chats
-- 
+- Handle images / image api's
+- Make the stop word configurable

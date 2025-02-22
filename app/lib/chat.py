@@ -20,7 +20,7 @@ class Chat(BaseModel):
         self._messages.append(message)
 
     @property
-    def rendered_prompt(self) -> str:
+    def _conversation(self) -> str:
         chat_history = f"""
         <|im_start|>system
         {self._system_message}
