@@ -1,6 +1,5 @@
-from .tools import AvailableTools
-from .chat import Message
-from .agent import Agent
+from .lib import Message, Agent
+from .config import Tools
 
 
 def main() -> None:
@@ -26,7 +25,7 @@ def main() -> None:
 
             if choice == "1":
                 # Show available tools that aren't currently selected
-                available = [t for t in AvailableTools if t not in agent.current_tools]
+                available = [t for t in Tools if t not in agent.current_tools]
                 if not available:
                     print("No additional tools available!")
                     continue

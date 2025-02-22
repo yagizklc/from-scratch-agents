@@ -10,19 +10,3 @@ class Tool(BaseModel):
     # NOTE: implement this for your tool
     def use(self):
         pass
-
-
-class Calculator(Tool):
-    pass
-
-
-class Search(Tool):
-    pass
-
-
-class Weather(Tool):
-    pass
-
-
-# register your tools here
-AvailableTools: list[type[Tool]] = [Calculator, Search, Weather]

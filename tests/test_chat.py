@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from app.chat import Message, Chat
+from app.lib.chat import Message, Chat
 
 
 def test_message_creation():

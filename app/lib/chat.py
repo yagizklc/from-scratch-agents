@@ -1,6 +1,6 @@
 from typing import Literal, Optional, Self
 from pydantic import BaseModel, model_validator
-from .tools import Tool
+from .tool import Tool
 from .config import SYSTEM_MESSAGE
 
 Role = Literal["user", "assitant"]
